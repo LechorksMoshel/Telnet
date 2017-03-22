@@ -19,7 +19,7 @@ bool is_number(const char* number)
     return !s.empty() && it == s.end();
 }
 
-int parsing_options(int argc, char* argv[])
+int parsing_options(int argc, char* argv[], int* listen_port)
 {
 	if(argc>1){
 		for(int i =1; i < argc; i++){
@@ -30,7 +30,7 @@ int parsing_options(int argc, char* argv[])
 			}
 			else if(arg=="-p"){
 				if(i+1<argc && is_number(argv[i+1])){
-					listen_port=atoi(argv[i+1]);
+					*listen_port=atoi(argv[i+1]);
 					i++;
 				}
 				else{
@@ -45,5 +45,6 @@ int parsing_options(int argc, char* argv[])
 			}
 		}
 	}
+	else return 0;
 
 }

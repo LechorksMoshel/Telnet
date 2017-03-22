@@ -15,6 +15,7 @@
 
 #include "parsing_options.h"
 #include "user.h"
+#include "performAction.h"
 
 using namespace std;
 
@@ -36,6 +37,11 @@ void help_master(const char* action)
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
+// Remove the newline characters to handle linux and mac line endings
+string removeNewlineChars(string input){
+    return input.erase(input.find_last_not_of(" \n\r\t")+1);
+}
+
 
 
 void* SocketHandler(void* lp){
@@ -49,7 +55,7 @@ void* SocketHandler(void* lp){
     char path[2048];
     //string wd = getcwd(path, 2048);
     string program_dir = getcwd(path, 2048);
-    string MOD = "Welcome to the stupid telnet server. \nAuthor: The stupid and boring man.\n> ";
+    string MOD = "Welcome to the Stupid Telnet Server. \nAuthor: The stupid and boring man.\n> ";
     const char* mod_string = MOD.c_str();
     if((bytecount = send(*csock, mod_string, strlen(mod_string), 0))== -1){
         cout << "Error sending data" << endl;
@@ -78,6 +84,9 @@ void* SocketHandler(void* lp){
 	name = removeNewlineChars(name);
     }
 
+    //Setting up the user profile
+    user dummy(csock, name.c_str());
+
     // Loop the connection until logout is received
     while(true){
 
@@ -90,7 +99,7 @@ void* SocketHandler(void* lp){
         cout << "Received string: " <<  buffer;
         string s(buffer);
         // Get the response from the command and return it to the client
-        string response = performAction(s, &name, program_dir);
+        string response = performAction(s, &dummy);
         if(response.find("exit") == 0){
             // We are quitting
             response = "[END OF INPUT]\n";
@@ -129,11 +138,11 @@ int main(int argc, char* argv[]){
 
     // Begin listening for a connection on port 6770 or whichever port is passed in
     // Default telnet port
-    extern int listen_port = 6770;
+    int listen_port = 6770 ; //Default value is 6770
     bool tests = false;
 
     //Parsing the options provided from the command line
-    int par_result = parsing_options(int argc, char* argv[]);
+    int par_result = parsing_options(argc, argv, &listen_port);//will chage listen_port if provided a user-defined port
     if(par_result!=0) return par_result;
 
 

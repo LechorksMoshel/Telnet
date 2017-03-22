@@ -1,10 +1,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
+#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdexcept>
 #include <string.h>
 
+
+#ifndef USER
 
 class user
 {
@@ -21,3 +24,5 @@ class user
 	const char* GetIP();
 	int GetSocket();
 };
+#define USER
+#endif

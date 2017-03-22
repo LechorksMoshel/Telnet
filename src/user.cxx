@@ -2,11 +2,13 @@
 
 using namespace std;
 
-user::user(int* csock_in, const char* name_in = "anonymous")
+user::user(int* csock_in, const char* name_in)
 {
+	int size_addr = sizeof(addr);
 	csock = *csock_in;
-	name = new char[200](name_in);
-	if(getpeername(csock, &addr, sizeof(addr))<0)
+	name = new char[200];
+	strcpy(name, name_in);
+	if(getpeername(csock, &addr, (socklen_t*)(&size_addr))<0)
 		throw runtime_error("Error getting address from socket, user profile not initiated.");
 	ip4 = new char[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr, ip4, INET_ADDRSTRLEN);
@@ -14,27 +16,28 @@ user::user(int* csock_in, const char* name_in = "anonymous")
 
 void user::SetName(const char* name_in)
 {
-	name=name_in;
+	strcpy(name,name_in);
 }
 
-void Refresh();//Reload the socketaddr from socket, just in case.
+void user::Refresh()//Reload the socketaddr from socket, just in case.
 {
-	if(getpeername(csock, &addr, sizeof(addr))<0)
+	int size_addr = sizeof(addr);
+	if(getpeername(csock, &addr, (socklen_t*)&size_addr)<0)
 		throw runtime_error("Error getting address from socket, user profile not initiated.");
 	inet_ntop(AF_INET, &addr, ip4, INET_ADDRSTRLEN);
 }
 
-const char* GetName()
+const char* user::GetName()
 {
 	return name;
 }
 
-const char* GetIP()
+const char* user::GetIP()
 {
 	return ip4;
 }
 
-int GetSocket()
+int user::GetSocket()
 {
 	return csock;
 }

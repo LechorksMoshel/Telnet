@@ -1,11 +1,13 @@
 #!/bin/bash
-if [$# -eq 0]
+if [ "$#" -eq "0" ] 
 then
-	COMMIT = 'publish'
+	echo $#
+	COMMIT='publish'
 else
-	COMMIT = $1
+	COMMIT=$1
+	echo $1
 fi
 
-#git add ./*
-git commit -m COMMIT
+git add ./*
+git commit -m $COMMIT
 git push origin master

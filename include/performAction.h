@@ -13,10 +13,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "user.h"
 
+using namespace std;
 
-void show_usage(const char* name);
-
-bool is_number(const char* number);
-
-int parsing_options(int argc, char* argv[], int* listen_port);
+string performAction(string s, user* dummy);

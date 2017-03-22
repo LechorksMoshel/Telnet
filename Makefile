@@ -1,6 +1,6 @@
 CXX            = g++
 CXXFLAGS       = -fPIC -Wall -O3 -g
-GLIBS          = -stdlib=libc++ -pthread 
+GLIBS          = -pthread 
 
 INCLUDEDIR       = ./include/
 SRCDIR           = ./src/
