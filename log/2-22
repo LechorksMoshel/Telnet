@@ -1,0 +1,119 @@
+Launching telnet server
+Waiting for a connection...
+Received a connection
+Waiting for a connection...
+Received username: god
+Received string: me again
+Recording: me again
+2017-02-22
+0
+Sent bytes 2
+Received string: good morning
+Recording: good morning
+2017-02-22
+0
+Sent bytes 2
+Received string: glad you remember me
+Recording: glad you remember me
+2017-02-22
+0
+Sent bytes 2
+Received string: logout
+Recording: logout
+Client disconnected
+Received a connection
+Waiting for a connection...
+Received username: god1
+Received a connection
+Waiting for a connection...
+Received username: god2
+Received string: I am testing the function of multi-connection
+Recording: I am testing the function of multi-connection
+2017-02-22
+0
+Sent bytes 2
+Received string: so am i
+Recording: so am i
+2017-02-22
+0
+Sent bytes 2
+Received string: logout
+Recording: logout
+Client disconnected
+Received string: logout
+Recording: logout
+Client disconnected
+Received a connection
+Waiting for a connection...
+Received username: me
+Received string: 
+Recording: 
+Sent bytes 2
+Received string: It is not the rejections themselves that made me into such a depressed state, or more precisely, not only.
+Recording: It is not the rejections themselves that made me into such a depressed state, or more precisely, not only.
+2017-03-05
+0
+Sent bytes 2
+Received string: Rejections resemble the social repulsion, that's what made me uneasy at first.
+Recording: Rejections resemble the social repulsion, that's what made me uneasy at first.
+2017-03-05
+0
+Sent bytes 2
+Received string: But what's more, this number of rejections deprived my hope of a destined bright future away.
+Recording: But what's more, this number of rejections deprived my hope of a destined bright future away.
+2017-03-05
+0
+Sent bytes 2
+Received string: I may have a "devil's luck", or may not. 
+Recording: I may have a "devil's luck", or may not.
+2017-03-05
+0
+Sent bytes 2
+Received string: I was lucky enough, but luck is not something that will accompany you forever.
+Recording: I was lucky enough, but luck is not something that will accompany you forever.
+2017-03-05
+0
+Sent bytes 2
+Received string: Never rely on luck, they don't promise anything. But sometimes they make things more fun.
+Recording: Never rely on luck, they don't promise anything. But sometimes they make things more fun.
+2017-03-05
+0
+Sent bytes 2
+Received string: But it is not a bad thing to have deprived my hope of the future, because where there was hope, now lies doubt.
+Recording: But it is not a bad thing to have deprived my hope of the future, because where there was hope, now lies doubt.
+2017-03-05
+0
+Sent bytes 2
+Received string: Can I say I was hard-working? No, I can't. And that's why I can't complain about the results.
+Recording: Can I say I was hard-working? No, I can't. And that's why I can't complain about the results.
+2017-03-05
+0
+Sent bytes 2
+Received string: The world may seem to be more stable than ten years ago, but that's only the apperance.
+Recording: The world may seem to be more stable than ten years ago, but that's only the apperance.
+2017-03-05
+0
+Sent bytes 2
+Received string: Is the timeline causal or destination-determined?
+Recording: Is the timeline causal or destination-determined?
+2017-03-05
+0
+Sent bytes 2
+Received string: We can't know because we can only experience the history once and never again.
+Recording: We can't know because we can only experience the history once and never again.
+2017-03-05
+0
+Sent bytes 2
+Received string: Or at least I can only remember this once.
+Recording: Or at least I can only remember this once.
+2017-03-05
+0
+Sent bytes 2
+Received string: Trust nothing and discover them by yourself.
+Recording: Trust nothing and discover them by yourself.
+2017-03-05
+0
+Sent bytes 2
+Received string: logout
+Recording: logout
+Client disconnected
