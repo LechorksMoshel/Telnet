@@ -23,6 +23,8 @@ class user
 	const char* GetName();
 	const char* GetIP();
 	int GetSocket();
+	int Rcv(char* buffer);
+	int Snd(char* sndstr);
 };
 #define USER
 #endif

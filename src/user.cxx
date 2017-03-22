@@ -41,3 +41,26 @@ int user::GetSocket()
 {
 	return csock;
 }
+
+//More convenient to receive data from client
+int user::Rcv(char* buffer)
+{
+	int bytecount=0;
+    	memset(buffer, 0, sizeof(buffer));
+    	if((bytecount = recv(csock, buffer, buffer_len, 0))== -1){
+    	    cout << "Error receiving data" <<endl;
+
+    	    return bytecount;
+    	}
+
+}
+
+int user::Snd(char* sndstr)
+{
+	int bytecount=0;
+	if((bytecount = send(csock, sndstr, strlen(sndstr), 0))== -1){
+        cout << "Error sending data" << endl;
+        shutdown(csock, 0);
+        return bytecount;
+	}
+}
