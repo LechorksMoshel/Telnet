@@ -14,7 +14,14 @@
 #include <stdio.h>
 
 #include "user.h"
+#include "log.h"
+#include "chat.h"
 
 using namespace std;
 
+#ifndef PERFORMACTION
+
 string performAction(string s, user* dummy);
+
+#define PERFORMACTION
+#endif

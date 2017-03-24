@@ -4,7 +4,15 @@
 #include<sys/socket.h>
 #include<stdio.h>
 #include<time.h>
+#include<errno.h>
 
 #include "user.h"
 
-string log(user* dummy);
+
+
+#ifndef LOG
+
+std::string log(user* dummy);
+
+#define LOG
+#endif

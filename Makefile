@@ -1,5 +1,5 @@
 CXX            = g++
-CXXFLAGS       = -fPIC -Wall -O3 -g
+CXXFLAGS       = -fPIC -Wall -O3 -g -std=c++11
 GLIBS          = -pthread 
 
 INCLUDEDIR       = ./include/

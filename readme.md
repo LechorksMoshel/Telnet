@@ -13,7 +13,7 @@ Usage
 =====
 
 run 
-    telnet_srv
+    telnet_serv
 
 You can provide either of the following arguments:
 
