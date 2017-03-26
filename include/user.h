@@ -3,8 +3,10 @@
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <stdio.h>
+#include <iostream>
 #include <stdexcept>
 #include <string.h>
+#include <string>
 
 
 #ifndef USER
@@ -24,7 +26,8 @@ class user
 	const char* GetIP();
 	int GetSocket();
 	int Rcv(char* buffer);
-	int Snd(char* sndstr);
+	int Snd(const char* sndstr);
+	int Snd(std::__cxx11::string sndstr);
 };
 #define USER
 #endif

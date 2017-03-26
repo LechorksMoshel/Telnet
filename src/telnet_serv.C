@@ -16,6 +16,7 @@
 #include "parsing_options.h"
 #include "user.h"
 #include "performAction.h"
+#include "format.h"
 
 using namespace std;
 
@@ -24,12 +25,9 @@ void help_master(const char* action, user* dummy)
 {
 	string helpinfo;
 	if(!action){
-		helpinfo="Here is the list of currently available actions:\n"
-			+"log\t\t||\tAny thing you type in this mode will be logged anonymously and be viewed later by the author. This is the place where you want to put your comment or unsatisfaction toward me. >.<\n"
-			+"chat\t\t||\tYou will enter a chatting room where you can chat with others who are also using this chatting room. However, I doubt there will be any. =.=\n"
-			+"More functions on the way!\n";
+		helpinfo="Here is the list of currently available actions:\nlog\t\t||\tAny thing you type in this mode will be logged anonymously and be viewed later by the author. This is the place where you want to put your comment or unsatisfaction toward me. >.<\nchat\t\t||\tYou will enter a chatting room where you can chat with others who are also using this chatting room. However, I doubt there will be any. =.=\nMore functions on the way!\n";
 	}
-	else 	helpinfo="No help page about action "+action+"! Check your spelling. \n";
+	else 	helpinfo=string_format("No help page about action %s! Check your spelling. \n",action);
 	dummy->Snd(helpinfo);
 }
 
@@ -114,6 +112,7 @@ void* SocketHandler(void* lp){
             free(csock);
             return 0;
         }
+	response=dummy.GetName();
         response.append("> ");
         if((bytecount = send(*csock, response.c_str(), response.length(), 0))== -1){
             cout << "Error sending data" << endl;

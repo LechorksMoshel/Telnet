@@ -46,21 +46,26 @@ int user::GetSocket()
 int user::Rcv(char* buffer)
 {
 	int bytecount=0;
+	int buffer_len = sizeof(buffer);
     	memset(buffer, 0, sizeof(buffer));
     	if((bytecount = recv(csock, buffer, buffer_len, 0))== -1){
     	    cout << "Error receiving data" <<endl;
-
-    	    return bytecount;
     	}
+    	    return bytecount;
 
 }
 
-int user::Snd(char* sndstr)
+int user::Snd(const char* sndstr)
 {
 	int bytecount=0;
 	if((bytecount = send(csock, sndstr, strlen(sndstr), 0))== -1){
         cout << "Error sending data" << endl;
         shutdown(csock, 0);
-        return bytecount;
 	}
+        return bytecount;
+}
+
+int user::Snd(string sndstr)
+{
+	return user::Snd(sndstr.c_str());
 }
