@@ -2,7 +2,7 @@
 if [ "$#" -eq "0" ] 
 then
 	echo $#
-	COMMIT='publish'
+	COMMIT='sync'
 else
 	COMMIT=$1
 	echo $1

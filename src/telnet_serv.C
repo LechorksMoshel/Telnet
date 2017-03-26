@@ -20,15 +20,17 @@
 using namespace std;
 
 
-void help_master(const char* action)
+void help_master(const char* action, user* dummy)
 {
+	string helpinfo;
 	if(!action){
-		cout	<<"Here is the list of currently available actions:\n"
-			<<"log\t\t||\tAny thing you type in this mode will be logged anonymously and be viewed later by the author. This is the place where you want to put your comment or unsatisfaction toward me. >.<\n"
-			<<"chat\t\t||\tYou will enter a chatting room where you can chat with others who are also using this chatting room. However, I doubt there will be any. =.=\n"
-			<<"More functions on the way!"<<endl;
+		helpinfo="Here is the list of currently available actions:\n"
+			+"log\t\t||\tAny thing you type in this mode will be logged anonymously and be viewed later by the author. This is the place where you want to put your comment or unsatisfaction toward me. >.<\n"
+			+"chat\t\t||\tYou will enter a chatting room where you can chat with others who are also using this chatting room. However, I doubt there will be any. =.=\n"
+			+"More functions on the way!\n";
 	}
-	else cout	<<"No help page about action "<<action<<"! Check your spelling. "<<endl;
+	else 	helpinfo="No help page about action "+action+"! Check your spelling. \n";
+	dummy->Snd(helpinfo);
 }
 
 
