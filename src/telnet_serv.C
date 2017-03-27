@@ -20,6 +20,8 @@
 
 using namespace std;
 
+uchain dummies;
+
 
 void help_master(const char* action, user* dummy)
 {
@@ -67,7 +69,8 @@ void* SocketHandler(void* lp){
         shutdown(*csock, 0);
         return 0;
     }
-    while(name.size()<1)
+    int invalid_name=0;
+    while(name.size()<1||name.find("mastermind")==0)
     {
     	memset(buffer, 0, buffer_len);
     	if((bytecount = recv(*csock, buffer, buffer_len, 0))== -1){
@@ -78,10 +81,19 @@ void* SocketHandler(void* lp){
     	cout << "Received username: " <<  buffer;
     	name = buffer;
 	name = removeNewlineChars(name);
+	if(invalid_name>0) {
+		if((bytecount = send(*csock, "Invalid name!\n>", strlen("Invalid name!\n>"), 0))== -1){
+		    cout << "Error sending data" << endl;
+		    shutdown(*csock, 0);
+		    return 0;
+		}
+	}
+	invalid_name++;
     }
 
     //Setting up the user profile
     user dummy(csock, name.c_str());
+    dummies.Add(&dummy);
     dummy.Snd(string_format("%s, Welcome! Type <help> to get list of avalable actions.\n",dummy.GetName()));
     dummy.Snd(dummy.GetName());
     dummy.Snd(">");
@@ -101,13 +113,14 @@ void* SocketHandler(void* lp){
 		help_master(0,&dummy);
 		response="help";
 	}
-        else response = performAction(s, &dummy);
+        else response = performAction(s, &dummy,&dummies);
         if(response.find("exit") == 0||response.find("logout")==0){
             // We are quitting
             response = "[END OF INPUT]\n";
 	    dummy.Snd(response);
             cout << "Client disconnected" << endl;
-            shutdown(*csock, 0);
+            //shutdown(*csock, 0);
+	    close(*csock);
             free(csock);
             return 0;
         }
@@ -149,6 +162,9 @@ int main(int argc, char* argv[]){
         cout << "Error opening socket" << endl;
         return 1;
     }
+
+    user master(&sck,"mastermind");
+    //dummies.Add(&master);
 
     bzero((char*) &host_addr, sizeof(host_addr));
 

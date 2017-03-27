@@ -15,6 +15,7 @@
 #include <arpa/inet.h>
 
 #include "const.h"
+#include "format.h"
 
 
 #ifndef USER
@@ -26,6 +27,8 @@ class user
 	char* name ;
 	char* ip4 ;
 	struct sockaddr addr;
+	char* status = new char[100];
+	user* next;
 	public:
 	user(int* csock_in, const char* name_in = "anonymous");
 	void SetName(const char* name_in);
@@ -36,6 +39,25 @@ class user
 	int Rcv(char* buffer);
 	int Snd(const char* sndstr);
 	int Snd(std::__cxx11::string sndstr);
+	void SetStatus(const char* status_in);
+	friend class uchain;
+};
+
+class uchain
+{
+	private:
+		user* start;
+		int nusers;
+	public:
+		uchain(user* firstuser=0);
+		user* Get(int entry);
+		int GetNentries();
+		int Add(user* newuser);
+		int List(user* watcher, const char* status="all");
+		int Remove(user* olduser);
+		int Remove(int csock);
+		int Snd(const char* sndstr, user* exclude);
+		int Snd(std::__cxx11::string sndstr, user* exclude);
 };
 #define USER
 #endif

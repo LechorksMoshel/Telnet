@@ -21,6 +21,7 @@ string log(user* dummy)
 	if(distribution(generator)==20) dummy->Snd("Do you know: Some times I use this to write my diary.\n");
 	while(true)
 	{
+		dummy->SetStatus("log");
 		dummy->Rcv(buffer);
 		string command(buffer);
 		command = removeNewlineChars(command);

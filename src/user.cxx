@@ -8,10 +8,11 @@ user::user(int* csock_in, const char* name_in)
 	csock = *csock_in;
 	name = new char[200];
 	strcpy(name, name_in);
-	if(getpeername(csock, &addr, (socklen_t*)(&size_addr))<0)
+	if(getpeername(csock, &addr, (socklen_t*)(&size_addr))<0&&strcmp(name,"mastermind")!=0)
 		throw runtime_error("Error getting address from socket, user profile not initiated.");
 	ip4 = new char[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr, ip4, INET_ADDRSTRLEN);
+	strcpy(status,"main");
 }
 
 void user::SetName(const char* name_in)
@@ -69,4 +70,125 @@ int user::Snd(const char* sndstr)
 int user::Snd(string sndstr)
 {
 	return user::Snd(sndstr.c_str());
+}
+
+void user::SetStatus(const char* status_in)
+{
+	strcpy(status,status_in);
+}
+
+
+uchain::uchain(user* firstuser)
+{
+	start = firstuser;
+	if(!start) nusers=0;
+	else nusers=1;
+}
+
+int uchain::GetNentries()
+{
+	return nusers;
+}
+
+user* uchain::Get(int entry)
+{
+	if(entry<0) return 0;
+	if(entry>=nusers) return 0;
+	user* tmp=start;
+	if(nusers==1) return tmp;
+	for(int i=1;i<nusers;i++)
+	{
+		tmp=tmp->next;
+	}
+	return tmp;
+}
+
+int uchain::Add(user* newuser)
+{
+	if(!newuser) return 0;
+	user* tmp=0;
+	if(!nusers) start=newuser; 
+	else {
+		tmp=Get(nusers-1);
+		tmp->next=newuser;
+	}
+	nusers++;
+	return nusers;
+}
+
+int uchain::List(user* watcher, const char* status)
+{
+	string search_status=status;
+	if(search_status=="all") search_status="mainlogstatuszombie";
+	user* tmp=start;
+	watcher->Snd(string_format("Name\t\tStatus\n"));
+	while(tmp)
+	{
+		if(search_status.find(tmp->status)>=0){
+			watcher->Snd(string_format("%s\t\t%s\n",tmp->GetName(),tmp->status));
+		}
+		tmp=tmp->next;
+	}
+}
+
+int uchain::Remove(user* olduser)
+{
+	user* tmp=start;
+	int entry=1;
+	while(tmp->next)
+	{
+		if(tmp->next->csock==olduser->csock){
+			tmp->next=olduser->next;
+			delete olduser;
+			break;
+		}
+		tmp=tmp->next;
+		entry++;
+	}
+	if(entry>=nusers) return -1;
+	else return entry;
+}
+
+int uchain::Remove(int csock)
+{
+	user* tmp=start;
+	user* olduser=0;
+	int entry=0;
+	while(tmp->next)
+	{
+		if(tmp->next->csock==csock){
+			olduser = tmp->next;
+			tmp->next=olduser->next;
+			delete olduser;
+			break;
+		}
+		tmp=tmp->next;
+		entry++;
+	}
+	if(entry>=nusers) return -1;
+	else return entry;
+}
+
+int uchain::Snd(const char* sndstr, user* sender)
+{
+	user* tmp=start;
+	int entry=0;
+	while(tmp) 
+	{
+		if(tmp->csock!=sender->csock){
+			int bytecount=0;
+			if((bytecount = send(tmp->csock, sndstr, strlen(sndstr), 0))== -1){
+			cout << "Error sending data" << endl;
+			shutdown(tmp->csock, 0);
+			}
+		}
+		tmp=tmp->next;
+		entry++;
+	}
+        return entry;
+}
+
+int uchain::Snd(string sndstr, user* sender)
+{
+	return uchain::Snd(sndstr.c_str(), sender);
 }

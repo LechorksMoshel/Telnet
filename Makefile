@@ -19,7 +19,7 @@ telnet_serv:  $(SRCDIR)telnet_serv.C $(OBJ_FILES) $(HH_FILES)
 	echo $(OBJ_FILES)
 	touch telnet_serv
 
-$(OUTOBJ)%.o: src/%.cxx include/%.h
+$(OUTOBJ)%.o: src/%.cxx include/%.h $(OBJ_FILES)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

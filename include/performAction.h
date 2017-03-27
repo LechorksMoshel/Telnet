@@ -22,7 +22,7 @@ using namespace std;
 
 #ifndef PERFORMACTION
 
-string performAction(string s, user* dummy);
+string performAction(string s, user* dummy, uchain* dummies);
 
 #define PERFORMACTION
 #endif
