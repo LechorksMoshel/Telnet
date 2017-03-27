@@ -10,5 +10,6 @@ fi
 
 git add ./*
 git remote remove ./log/*
+git remote remove ./obj/*
 git commit -m $COMMIT
 git push origin master
