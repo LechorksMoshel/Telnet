@@ -37,10 +37,6 @@ void help_master(const char* action, user* dummy)
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
-// Remove the newline characters to handle linux and mac line endings
-string removeNewlineChars(string input){
-    return input.erase(input.find_last_not_of(" \n\r\t")+1);
-}
 
 
 
@@ -86,38 +82,37 @@ void* SocketHandler(void* lp){
 
     //Setting up the user profile
     user dummy(csock, name.c_str());
+    dummy.Snd(string_format("%s, Welcome! Type <help> to get list of avalable actions.\n",dummy.GetName()));
+    dummy.Snd(dummy.GetName());
+    dummy.Snd(">");
 
     // Loop the connection until logout is received
     while(true){
 
         memset(buffer, 0, buffer_len);
-        if((bytecount = recv(*csock, buffer, buffer_len, 0))== -1){
-            cout << "Error receiving data" <<endl;
-
-            return 0;
-        }
-        cout << "Received string: " <<  buffer;
+	dummy.Rcv(buffer);
+        //cout << "Received string: " <<  buffer;
         string s(buffer);
+	s=removeNewlineChars(s);
         // Get the response from the command and return it to the client
-        string response = performAction(s, &dummy);
-        if(response.find("exit") == 0){
+	string response="";
+	if(s==""){response="";}
+	else if(s=="help") {
+		help_master(0,&dummy);
+		response="help";
+	}
+        else response = performAction(s, &dummy);
+        if(response.find("exit") == 0||response.find("logout")==0){
             // We are quitting
             response = "[END OF INPUT]\n";
-            if((bytecount = send(*csock, response.c_str(), response.length(), 0))== -1){
-                cout << "Error sending data" << endl;
-                return 0;
-            }
+	    dummy.Snd(response);
             cout << "Client disconnected" << endl;
             shutdown(*csock, 0);
             free(csock);
             return 0;
         }
-	response=dummy.GetName();
-        response.append("> ");
-        if((bytecount = send(*csock, response.c_str(), response.length(), 0))== -1){
-            cout << "Error sending data" << endl;
-            return 0;
-        }
+	dummy.Snd(dummy.GetName());
+	dummy.Snd(">");
 
         cout << "Sent bytes " << bytecount << endl;
     }

@@ -16,6 +16,7 @@
 #include "user.h"
 #include "log.h"
 #include "chat.h"
+#include "const.h"
 
 using namespace std;
 

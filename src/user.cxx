@@ -46,11 +46,12 @@ int user::GetSocket()
 int user::Rcv(char* buffer)
 {
 	int bytecount=0;
-	int buffer_len = sizeof(buffer);
-    	memset(buffer, 0, sizeof(buffer));
+	int buffer_len = BUFFER_LEN;
+    	memset(buffer, 0, buffer_len);
     	if((bytecount = recv(csock, buffer, buffer_len, 0))== -1){
     	    cout << "Error receiving data" <<endl;
     	}
+	cout<<"received string: "<<buffer<<endl;
     	    return bytecount;
 
 }

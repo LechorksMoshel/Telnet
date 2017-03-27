@@ -9,5 +9,6 @@ else
 fi
 
 git add ./*
+git remote remove ./log/*
 git commit -m $COMMIT
 git push origin master
