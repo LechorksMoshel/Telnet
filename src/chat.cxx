@@ -5,7 +5,7 @@ using namespace std;
 string chat(user* dummy, uchain* dummies)
 {
 	dummy->Snd("Welcome to the relay channel, type /help to see available commands.\n");
-	//dummy->Snd(string_format("%s>",dummy->GetName()));
+	dummy->Snd(string_format("%s>",dummy->GetName()));
 	char* buffer = new char[BUFFER_LEN];
 	while(true)
 	{
@@ -25,8 +25,8 @@ string chat(user* dummy, uchain* dummies)
 			dummies->List(dummy,"all");
 		}
 		else{
-			dummies->Snd(string_format("%s>%s",dummy->GetName(),buffer),dummy);
+			dummies->Snd(string_format("\r%s>%s",dummy->GetName(),buffer),dummy);
 		}
-		//dummy->Snd(string_format("%s>",dummy->GetName())); <---Still don't know how to maintain this at the bottom line
+		dummy->Snd(string_format("%s>",dummy->GetName())); 
 	}
 }

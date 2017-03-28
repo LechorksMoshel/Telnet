@@ -19,6 +19,7 @@
 
 
 #ifndef USER
+class uchain;
 
 class user
 {
@@ -29,6 +30,7 @@ class user
 	struct sockaddr addr;
 	char* status = new char[100];
 	user* next;
+	uchain* chain;
 	public:
 	user(int* csock_in, const char* name_in = "anonymous");
 	void SetName(const char* name_in);

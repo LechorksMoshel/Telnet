@@ -120,6 +120,7 @@ void* SocketHandler(void* lp){
 	    dummy.Snd(response);
             cout << "Client disconnected" << endl;
             //shutdown(*csock, 0);
+	    dummies.Remove(&dummy);
 	    close(*csock);
             free(csock);
             return 0;
@@ -130,6 +131,7 @@ void* SocketHandler(void* lp){
         cout << "Sent bytes " << bytecount << endl;
     }
     cout << "Client disconnected" << endl;
+    dummies.Remove(&dummy);
     return 0;
 }
 
@@ -164,7 +166,7 @@ int main(int argc, char* argv[]){
     }
 
     user master(&sck,"mastermind");
-    //dummies.Add(&master);
+    dummies.Add(&master);
 
     bzero((char*) &host_addr, sizeof(host_addr));
 

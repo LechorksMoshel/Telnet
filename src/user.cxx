@@ -13,7 +13,9 @@ user::user(int* csock_in, const char* name_in)
 	ip4 = new char[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &addr, ip4, INET_ADDRSTRLEN);
 	strcpy(status,"main");
+	chain=0;
 }
+
 
 void user::SetName(const char* name_in)
 {
@@ -62,6 +64,7 @@ int user::Snd(const char* sndstr)
 	int bytecount=0;
 	if((bytecount = send(csock, sndstr, strlen(sndstr), 0))== -1){
         cout << "Error sending data" << endl;
+	if(chain) chain->Remove(this);
         shutdown(csock, 0);
 	}
         return bytecount;
@@ -113,6 +116,7 @@ int uchain::Add(user* newuser)
 		tmp->next=newuser;
 	}
 	nusers++;
+	newuser->chain=this;
 	return nusers;
 }
 
@@ -138,8 +142,8 @@ int uchain::Remove(user* olduser)
 	while(tmp->next)
 	{
 		if(tmp->next->csock==olduser->csock){
+			cout<<"!"<<endl;
 			tmp->next=olduser->next;
-			delete olduser;
 			break;
 		}
 		tmp=tmp->next;
@@ -171,15 +175,24 @@ int uchain::Remove(int csock)
 
 int uchain::Snd(const char* sndstr, user* sender)
 {
-	user* tmp=start;
+	user* tmp=start->next;
 	int entry=0;
+	char* buffer_in = new char[BUFFER_LEN];
 	while(tmp) 
 	{
+			cout<<tmp->GetName()<<endl;
 		if(tmp->csock!=sender->csock){
 			int bytecount=0;
-			if((bytecount = send(tmp->csock, sndstr, strlen(sndstr), 0))== -1){
-			cout << "Error sending data" << endl;
+			string newstring = sndstr;
+			recv(tmp->csock,buffer_in,BUFFER_LEN,MSG_DONTWAIT);//Trying to matin the input buffer, but no luck
+			newstring.append(string_format("%s>%s",tmp->GetName(),buffer_in));
+			if((bytecount = send(tmp->csock, newstring.c_str(), strlen(newstring.c_str()),0))== -1){
+			cout << "Error sending data to "<<tmp->GetName() << endl;
 			shutdown(tmp->csock, 0);
+			user* trash=tmp;
+			tmp=tmp->next;
+			this->Remove(trash);
+			continue;
 			}
 		}
 		tmp=tmp->next;
