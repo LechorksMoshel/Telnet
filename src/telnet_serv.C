@@ -63,15 +63,22 @@ void* SocketHandler(void* lp){
 
     //Giving a name to the user
     string name("");
-    const char* tellmeyourname="Tell me your name, or you can use a nickname.\n> ";
+    const char* tellmeyourname="Tell me your name, or you can use a nickname. (3-10 characters)\n> ";
     if((bytecount = send(*csock, tellmeyourname, strlen(tellmeyourname), 0))== -1){
         cout << "Error sending data" << endl;
         shutdown(*csock, 0);
         return 0;
     }
     int invalid_name=0;
-    while(name.size()<1||name.find("mastermind")==0)
+    while(dummies.CheckSameName(name.c_str())>=0)
     {
+	if(invalid_name>0) {
+		if((bytecount = send(*csock, "Invalid name!\n>", strlen("Invalid name!\n>"), 0))== -1){
+		    cout << "Error sending data" << endl;
+		    shutdown(*csock, 0);
+		    return 0;
+		}
+	}
     	memset(buffer, 0, buffer_len);
     	if((bytecount = recv(*csock, buffer, buffer_len, 0))== -1){
     	    cout << "Error receiving data" <<endl;
@@ -81,13 +88,6 @@ void* SocketHandler(void* lp){
     	cout << "Received username: " <<  buffer;
     	name = buffer;
 	name = removeNewlineChars(name);
-	if(invalid_name>0) {
-		if((bytecount = send(*csock, "Invalid name!\n>", strlen("Invalid name!\n>"), 0))== -1){
-		    cout << "Error sending data" << endl;
-		    shutdown(*csock, 0);
-		    return 0;
-		}
-	}
 	invalid_name++;
     }
 

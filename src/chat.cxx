@@ -4,6 +4,7 @@ using namespace std;
 
 string chat(user* dummy, uchain* dummies)
 {
+	dummy->SetStatus("chat");
 	dummy->Snd("Welcome to the relay channel, type /help to see available commands.\n");
 	dummy->Snd(string_format("%s>",dummy->GetName()));
 	char* buffer = new char[BUFFER_LEN];

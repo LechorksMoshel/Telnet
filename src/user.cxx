@@ -14,6 +14,7 @@ user::user(int* csock_in, const char* name_in)
 	inet_ntop(AF_INET, &addr, ip4, INET_ADDRSTRLEN);
 	strcpy(status,"main");
 	chain=0;
+	next=0;
 }
 
 
@@ -125,11 +126,11 @@ int uchain::List(user* watcher, const char* status)
 	string search_status=status;
 	if(search_status=="all") search_status="mainlogstatuszombie";
 	user* tmp=start;
-	watcher->Snd(string_format("Name\t\tStatus\n"));
+	watcher->Snd(string_format("\tName      \tStatus\n"));
 	while(tmp)
 	{
 		if(search_status.find(tmp->status)>=0){
-			watcher->Snd(string_format("%s\t\t%s\n",tmp->GetName(),tmp->status));
+			watcher->Snd(string_format("\t%-10s\t%s\n",tmp->GetName(),tmp->status));
 		}
 		tmp=tmp->next;
 	}
@@ -137,6 +138,7 @@ int uchain::List(user* watcher, const char* status)
 
 int uchain::Remove(user* olduser)
 {
+	olduser->SetStatus("zombie");
 	user* tmp=start;
 	int entry=1;
 	while(tmp->next)
@@ -144,6 +146,7 @@ int uchain::Remove(user* olduser)
 		if(tmp->next->csock==olduser->csock){
 			cout<<"!"<<endl;
 			tmp->next=olduser->next;
+			nusers--;
 			break;
 		}
 		tmp=tmp->next;
@@ -162,8 +165,9 @@ int uchain::Remove(int csock)
 	{
 		if(tmp->next->csock==csock){
 			olduser = tmp->next;
+			olduser->SetStatus("zombie");
 			tmp->next=olduser->next;
-			delete olduser;
+			nusers--;
 			break;
 		}
 		tmp=tmp->next;
@@ -204,4 +208,21 @@ int uchain::Snd(const char* sndstr, user* sender)
 int uchain::Snd(string sndstr, user* sender)
 {
 	return uchain::Snd(sndstr.c_str(), sender);
+}
+
+int uchain::CheckSameName(const char* target)
+{
+	cout<<target<<endl;
+	if(strlen(target)<3||strlen(target)>10) return 100;
+	user* tmp=start;
+	int entry=0;
+	string target_string(target);
+	while(tmp)
+	{
+		if(target_string==tmp->GetName()) return entry;
+		tmp=tmp->next;
+		cout<<(void*) tmp<<endl;
+		entry++;
+	}
+	return -1;
 }

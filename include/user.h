@@ -60,6 +60,7 @@ class uchain
 		int Remove(int csock);
 		int Snd(const char* sndstr, user* exclude);
 		int Snd(std::__cxx11::string sndstr, user* exclude);
+		int CheckSameName(const char* target);
 };
 #define USER
 #endif

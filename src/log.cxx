@@ -4,6 +4,7 @@ using namespace std;
 
 string log(user* dummy)
 {
+	dummy->SetStatus("log");
 	char* buffer = new char[BUFFER_LEN];
         char* filename_c = new char[300];
         time_t timer;
