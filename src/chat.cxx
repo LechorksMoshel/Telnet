@@ -8,7 +8,7 @@ string chat(user* dummy, uchain* dummies)
 	dummy->Snd("Welcome to the relay channel, type /help to see available commands.\n");
 	dummy->Snd(string_format("%s>",dummy->GetName()));
 	char* buffer = new char[BUFFER_LEN];
-	while(true)
+	while(!dummy->IsZombie())
 	{
 		dummy->Rcv(buffer);
 		string command(buffer);
@@ -30,4 +30,5 @@ string chat(user* dummy, uchain* dummies)
 		}
 		dummy->Snd(string_format("%s>",dummy->GetName())); 
 	}
+	return "exit";
 }

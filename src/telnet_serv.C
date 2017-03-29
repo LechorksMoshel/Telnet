@@ -55,7 +55,7 @@ void* SocketHandler(void* lp){
     string program_dir = getcwd(path, 2048);
     string MOD = "Welcome to the Stupid Telnet Server. \nAuthor: The stupid and boring man.\n> ";
     const char* mod_string = MOD.c_str();
-    if((bytecount = send(*csock, mod_string, strlen(mod_string), 0))== -1){
+    if((bytecount = send(*csock, mod_string, strlen(mod_string), MSG_NOSIGNAL))== -1){
         cout << "Error sending data" << endl;
         shutdown(*csock, 0);
         return 0;
@@ -64,7 +64,7 @@ void* SocketHandler(void* lp){
     //Giving a name to the user
     string name("");
     const char* tellmeyourname="Tell me your name, or you can use a nickname. (3-10 characters)\n> ";
-    if((bytecount = send(*csock, tellmeyourname, strlen(tellmeyourname), 0))== -1){
+    if((bytecount = send(*csock, tellmeyourname, strlen(tellmeyourname), MSG_NOSIGNAL))== -1){
         cout << "Error sending data" << endl;
         shutdown(*csock, 0);
         return 0;
@@ -73,7 +73,7 @@ void* SocketHandler(void* lp){
     while(dummies.CheckSameName(name.c_str())>=0)
     {
 	if(invalid_name>0) {
-		if((bytecount = send(*csock, "Invalid name!\n>", strlen("Invalid name!\n>"), 0))== -1){
+		if((bytecount = send(*csock, "Invalid name!\n>", strlen("Invalid name!\n>"), MSG_NOSIGNAL))== -1){
 		    cout << "Error sending data" << endl;
 		    shutdown(*csock, 0);
 		    return 0;
@@ -99,7 +99,7 @@ void* SocketHandler(void* lp){
     dummy.Snd(">");
 
     // Loop the connection until logout is received
-    while(true){
+    while(!dummy.IsZombie()){
 
         memset(buffer, 0, buffer_len);
 	dummy.Rcv(buffer);

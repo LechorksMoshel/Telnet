@@ -42,6 +42,7 @@ class user
 	int Snd(const char* sndstr);
 	int Snd(std::__cxx11::string sndstr);
 	void SetStatus(const char* status_in);
+	bool IsZombie();
 	friend class uchain;
 };
 

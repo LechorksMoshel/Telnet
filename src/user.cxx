@@ -53,8 +53,12 @@ int user::Rcv(char* buffer)
 	int buffer_len = BUFFER_LEN;
     	memset(buffer, 0, buffer_len);
     	if((bytecount = recv(csock, buffer, buffer_len, 0))== -1){
+	cout<<bytecount<<endl;
     	    cout << "Error receiving data" <<endl;
+	    if(chain) chain->Remove(this);
+	    shutdown(csock, 0);
     	}
+	cout<<bytecount<<endl;
 	cout<<"received string: "<<buffer<<endl;
     	    return bytecount;
 
@@ -63,7 +67,8 @@ int user::Rcv(char* buffer)
 int user::Snd(const char* sndstr)
 {
 	int bytecount=0;
-	if((bytecount = send(csock, sndstr, strlen(sndstr), 0))== -1){
+	cout<<sndstr<<endl;
+	if((bytecount = send(csock, sndstr, strlen(sndstr),MSG_NOSIGNAL))== -1){
         cout << "Error sending data" << endl;
 	if(chain) chain->Remove(this);
         shutdown(csock, 0);
@@ -79,6 +84,13 @@ int user::Snd(string sndstr)
 void user::SetStatus(const char* status_in)
 {
 	strcpy(status,status_in);
+}
+
+bool user::IsZombie()
+{
+	string status_string(status);
+	if(status_string=="zombie") return true;
+	else return false;
 }
 
 
@@ -190,7 +202,7 @@ int uchain::Snd(const char* sndstr, user* sender)
 			string newstring = sndstr;
 			recv(tmp->csock,buffer_in,BUFFER_LEN,MSG_DONTWAIT);//Trying to matin the input buffer, but no luck
 			newstring.append(string_format("%s>%s",tmp->GetName(),buffer_in));
-			if((bytecount = send(tmp->csock, newstring.c_str(), strlen(newstring.c_str()),0))== -1){
+			if((bytecount = send(tmp->csock, newstring.c_str(), strlen(newstring.c_str()),MSG_NOSIGNAL))== -1){
 			cout << "Error sending data to "<<tmp->GetName() << endl;
 			shutdown(tmp->csock, 0);
 			user* trash=tmp;

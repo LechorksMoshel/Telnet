@@ -20,12 +20,15 @@ string log(user* dummy)
 	default_random_engine generator;
 	uniform_int_distribution<int> distribution(0,20);
 	if(distribution(generator)==20) dummy->Snd("Do you know: Some times I use this to write my diary.\n");
-	while(true)
+	while(!dummy->IsZombie())
 	{
 		dummy->SetStatus("log");
+		cout<<"a"<<endl;
 		dummy->Rcv(buffer);
+		cout<<"b"<<endl;
 		string command(buffer);
 		command = removeNewlineChars(command);
+		cout<<"c"<<endl;
 		if(command=="help"){
 			dummy->Snd("help\t\tDisplay this help message.\nback\t\tReturn to the previous menu.\nexit\t\tCompletely logout.\n<else>\t\tLog the message you type.\n");
 		}
@@ -36,11 +39,13 @@ string log(user* dummy)
 			return "exit";
 		}
 		else{
+		cout<<"d"<<endl;
 			fout<<dummy->GetName()<<"@"<<dummy->GetIP()<<":\t"<<command<<endl;
 			if(!fout) cout<<"Establishing a new file!"<<endl;
 			dummy->Snd("Now you can type:\n");
+			cout<<"e"<<endl;
 			//cout<<errno<<endl;
 		}
 	}
-	return "LOG ended unexpectedly";
+	return "exit";
 }
