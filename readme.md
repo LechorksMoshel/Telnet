@@ -1,12 +1,4 @@
-+++
-Categories = ["network","c++"]
-Tags = ["network","c++"]
-Description = ""
-date = "2017-03-21T03:56:54-07:00"
-title = "Stupid Telnet Server"
-menu = "projects"
-
-+++
+# Stupid Telnet Server
 
 This is a for-fun project, and I have finally enabled the **chat** mode! In this mode you can send a message to everyone else who is also connected to this server (whether they are in the chat mode or not). In the chat mode commands shoud be preceded with a '/'. Such as "/help" for the list of available commands, "/who" to see who is also connected and what they are doing, "/back" to quit the chat mode.
 
