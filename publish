@@ -8,8 +8,6 @@ else
 	echo $1
 fi
 
-git add ./*
-git remote remove ./log/*
-git remote remove ./obj/*
+git add \*
 git commit -m $COMMIT
 git push origin master
