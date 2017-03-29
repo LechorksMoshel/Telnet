@@ -45,6 +45,6 @@ int parsing_options(int argc, char* argv[], int* listen_port)
 			}
 		}
 	}
-	else return 0;
+	return 0;
 
 }
